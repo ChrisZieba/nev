@@ -1,6 +1,25 @@
 # nev
  
 ```
+
+<?php
+ 
+require_once('/functions.php');
+require_once('/Amazon/SQS/Queue.php');
+ 
+ini_set('display_errors',0);
+print "Parent : ". getmypid() . "\n";
+ 
+global $pids;
+$pids = Array();
+ 
+// Daemonize
+$pid = pcntl_fork();
+if ($pid) {
+    // we are the parent or an could not fork
+    exit();
+}
+
 function handler ($signo) {
     global $pids, $pidFileWritten;
     if ($signo == SIGTERM || $signo == SIGHUP || $signo == SIGINT) {
